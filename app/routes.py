@@ -1,8 +1,11 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
-# Create a Blueprint for modular structure
 main = Blueprint('main', __name__)
 
 @main.route('/')
-def hello_world():
-    return "Hello, World!"
+def home():
+    return render_template("home.html", title="Home")
+
+@main.route('/about')
+def about():
+    return render_template("about.html", title="About")
