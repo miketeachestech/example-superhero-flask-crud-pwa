@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>About This App</h1>
-    <p>This is a simple Flask application with multiple pages.</p>
+<div class="text-center">
+    <h1 class="text-warning fw-bold">About SuperApp</h1>
+    <p class="lead">A simple superhero db app.</p>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="SuperApp Logo" class="mt-3" width="150">
+</div>
 {% endblock %}
