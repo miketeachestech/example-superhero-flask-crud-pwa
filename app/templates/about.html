@@ -1,9 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="text-center">
-    <h1 class="text-warning fw-bold">About SuperApp</h1>
-    <p class="lead">A simple superhero db app.</p>
-    <img src="{{ url_for('static', filename='logo.png') }}" alt="SuperApp Logo" class="mt-3" width="150">
+<div class="container text-center">
+    <h1 class="text-warning fw-bold mb-4">About SuperApp</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <p class="lead text-light">
+                This website is a simple example of how web applications work using <strong>Python</strong> and <strong>Flask</strong>. 
+                It demonstrates how websites can store and manage information using a <strong>database (SQLite)</strong>, allowing 
+                users to <span class="text-warning">add, edit, and delete superheroes</span>. 
+            </p>
+
+            <hr class="bg-warning opacity-75 my-4" style="height: 2px; border-radius: 5px;">
+
+            <p class="text-light">
+                Each superhero is stored with important 
+                details like their real name, alias, universe, and image, and they can have connected to them. 
+                This is an example of a <span class="text-warning">one-to-many relationships</span> in <strong>databases</strong>, 
+                where one superhero can have many powers. <strong>Flask</strong>, a lightweight web framework, 
+                makes it easy to <span class="text-warning">handle user requests, interact with the database, and 
+                display dynamic web pages</span>.
+                <br><br>
+                Beyond basic functionality, this project introduces key <strong>real-world programming concepts</strong> like 
+                <span class="text-warning">form validation</span> to prevent errors when adding data, <span class="text-warning">file uploads</span> for 
+                superhero images, and <span class="text-warning">security measures</span> like <strong>CSRF protection</strong> to prevent unauthorized 
+                form submissions. It also utilizes <strong>Bootstrap</strong>, a popular CSS framework, to enhance the user 
+                experience and make the website <span class="text-warning">both functional and (somewhat) visually appealing</span>.
+            </p>
+
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="SuperApp Logo" class="mt-4 rounded shadow" width="150">
+        </div>
+    </div>
 </div>
 {% endblock %}
