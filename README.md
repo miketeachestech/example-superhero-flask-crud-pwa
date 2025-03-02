@@ -1,4 +1,6 @@
-# Superhero App
+# SuperApp!
+
+A simple app that allows you to Create, Retrieve, Update, and Delete superheroes from a database.
 
 ![Superhero App Screenshot](screenshot.png)  
 
@@ -44,7 +46,7 @@ By working on this project, students get hands-on experience with **backend deve
 
 ## Walkthrough  
 
-This project was built step by step, with each commit adding new functionality. Below is a breakdown of what each step accomplished.  
+This project was built step by step, with each commit adding new functionality. Below is a breakdown of what each step accomplished. Click through the commit history to see the code for each of these steps: 
 
 1️⃣ **Created basic hello world page**  
    - Started the Flask app with a simple **"Hello, World!"** page.  
@@ -129,7 +131,7 @@ This project was built step by step, with each commit adding new functionality. 
 
 Want to take this project **to the next level**? Try downloading this project and extending its functionality by adding:  
 
-🔹 **Villains** – Add a new database table and page to handle supervillains. Create relationships with the superheroes (e.g. archnemesis).
+🔹 **Villains** – Add a new database table and page to handle supervillains. Create relationships with the superheroes (e.g. archnemesis).  
 🔹 **Pagination** – Break the superhero list into pages so all superheroes don’t load at once.  
 🔹 **Image Resizing** – Optimize superhero images to reduce load times.  
 🔹 **Logging** – Keep track of user actions and errors in a log file.  
