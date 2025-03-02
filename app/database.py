@@ -13,13 +13,14 @@ def initialize_db():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Create Superheroes table
+    # Create Superheroes table (including image URL)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS superheroes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL UNIQUE,
             alias TEXT NOT NULL,
-            universe TEXT NOT NULL
+            universe TEXT NOT NULL,
+            image_url TEXT DEFAULT 'default.png'
         )
     ''')
 

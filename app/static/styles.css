@@ -23,3 +23,18 @@ h1, .lead {
     text-shadow: 0 0 8px rgba(255, 255, 0, 0.8); /* Yellow glow text */
     color: #ffeb3b !important; /* Bright yellow text */
 }
+
+.card-img-top {
+    height: 250px; /* Fixed height for uniformity */
+    object-fit: cover; /* Ensures the image fills the space */
+    object-position: top; /* Crops toward the top */
+    border-bottom: 3px solid yellow; /* Superhero theme */
+}
+
+.card {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}

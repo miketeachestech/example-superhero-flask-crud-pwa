@@ -1,7 +1,7 @@
 from app.database import get_db_connection
 
 def seed_data():
-    """Populates the database with example superheroes and powers"""
+    """Populates the database with superheroes, powers, and images"""
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -9,15 +9,17 @@ def seed_data():
     cursor.execute("DELETE FROM superpowers")
     cursor.execute("DELETE FROM superheroes")
 
-    # Insert Superheroes
-    cursor.execute("INSERT INTO superheroes (name, alias, universe) VALUES (?, ?, ?)", 
-                   ("Tony Stark", "Iron Man", "Marvel"))
+    # Insert Superheroes with Image URLs
+    cursor.execute("INSERT INTO superheroes (name, alias, universe, image_url) VALUES (?, ?, ?, ?)", 
+                   ("Tony Stark", "Iron Man", "Marvel", "ironman.png"))
     ironman_id = cursor.lastrowid
-    cursor.execute("INSERT INTO superheroes (name, alias, universe) VALUES (?, ?, ?)", 
-                   ("Bruce Wayne", "Batman", "DC"))
+
+    cursor.execute("INSERT INTO superheroes (name, alias, universe, image_url) VALUES (?, ?, ?, ?)", 
+                   ("Bruce Wayne", "Batman", "DC", "batman.jpg"))
     batman_id = cursor.lastrowid
-    cursor.execute("INSERT INTO superheroes (name, alias, universe) VALUES (?, ?, ?)", 
-                   ("Clark Kent", "Superman", "DC"))
+
+    cursor.execute("INSERT INTO superheroes (name, alias, universe, image_url) VALUES (?, ?, ?, ?)", 
+                   ("Clark Kent", "Superman", "DC", "superman.png"))
     superman_id = cursor.lastrowid
 
     # Insert Superpowers (linked via superhero_id)
