@@ -51,7 +51,7 @@
                             <!-- Add New Power -->
                             <form method="POST" action="{{ url_for('main.add_power', hero_id=hero['id']) }}" class="mt-2">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="power" placeholder="New Power" required>
+                                    <input type="text" class="form-control" name="power" placeholder="New Power" required minlength="2" maxlength="200">
                                     <button type="submit" class="btn btn-success">➕ Add</button>
                                 </div>
                             </form>

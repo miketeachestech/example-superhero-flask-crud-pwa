@@ -1,3 +1,4 @@
+import re
 import os
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
@@ -47,18 +48,38 @@ def allowed_file(filename):
     """Check if the file has an allowed extension"""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_EXTENSIONS
 
+def sanitize_input(text):
+    """Removes special characters to prevent XSS/SQL injection"""
+    return re.sub(r'[^\w\s-]', '', text)
+
 @main.route('/add', methods=['GET', 'POST'])
 def add_superhero():
-    """Form to add a new superhero with an image upload"""
+    """Form to add a new superhero with validation"""
     if request.method == 'POST':
-        name = request.form['name']
-        alias = request.form['alias']
-        universe = request.form['universe']
+        name = sanitize_input(request.form['name'].strip())
+        alias = sanitize_input(request.form['alias'].strip())
+        universe = request.form['universe'].strip()
         image_file = request.files['image']
+
+        if not (2 <= len(name) <= 100 and 2 <= len(alias) <= 100):
+            flash("Name and alias must be between 2 and 100 characters.", "danger")
+            return redirect(url_for('main.add_superhero'))
+
+        if universe not in ['Marvel', 'DC', 'Other']:
+            flash("Invalid universe selection.", "danger")
+            return redirect(url_for('main.add_superhero'))
 
         image_filename = 'default.png'  # Default image if no file is uploaded
 
         if image_file and allowed_file(image_file.filename):
+            if image_file.mimetype not in ['image/png', 'image/jpeg', 'image/jpg', 'image/gif']:
+                flash("Invalid image format.", "danger")
+                return redirect(url_for('main.add_superhero'))
+            if len(image_file.read()) > 2 * 1024 * 1024:  # 2MB limit
+                flash("Image size must be less than 2MB.", "danger")
+                return redirect(url_for('main.add_superhero'))
+            
+            image_file.seek(0)  # Reset file pointer after checking size
             filename = secure_filename(image_file.filename)  # Sanitize filename
             image_path = os.path.join(Config.UPLOAD_FOLDER, filename)
             image_file.save(image_path)  # Save file

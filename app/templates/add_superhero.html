@@ -7,12 +7,12 @@
     <form method="POST" action="{{ url_for('main.add_superhero') }}" enctype="multipart/form-data" class="bg-dark p-4 rounded shadow">
         <div class="mb-3">
             <label for="name" class="form-label text-light">Real Name:</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+            <input type="text" class="form-control" id="name" name="name" required minlength="2" maxlength="100">
         </div>
 
         <div class="mb-3">
             <label for="alias" class="form-label text-light">Hero Name (Alias):</label>
-            <input type="text" class="form-control" id="alias" name="alias" required>
+            <input type="text" class="form-control" id="alias" name="alias" required minlength="2" maxlength="100">
         </div>
 
         <div class="mb-3">
@@ -26,8 +26,8 @@
 
         <div class="mb-3">
             <label for="image" class="form-label text-light">Upload Image:</label>
-            <input type="file" class="form-control" id="image" name="image" accept="image/*">
-            <small class="text-light">Allowed file types: JPG, PNG, GIF</small>
+            <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpg, image/jpeg, image/gif">
+            <small class="text-light">Allowed: PNG, JPG, GIF (Max 2MB)</small>
         </div>
 
         <button type="submit" class="btn btn-warning">Add Superhero</button>

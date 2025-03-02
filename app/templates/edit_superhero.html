@@ -7,14 +7,14 @@
     <form method="POST" action="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" enctype="multipart/form-data" class="bg-dark p-4 rounded shadow">
         <div class="mb-3">
             <label for="name" class="form-label text-light">Real Name:</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ hero['name'] }}" required>
+            <input type="text" class="form-control" id="name" name="name" value="{{ hero['name'] }}" required minlength="2" maxlength="100">
         </div>
-
+        
         <div class="mb-3">
             <label for="alias" class="form-label text-light">Hero Name (Alias):</label>
-            <input type="text" class="form-control" id="alias" name="alias" value="{{ hero['alias'] }}" required>
+            <input type="text" class="form-control" id="alias" name="alias" value="{{ hero['alias'] }}" required minlength="2" maxlength="100">
         </div>
-
+        
         <div class="mb-3">
             <label for="universe" class="form-label text-light">Universe:</label>
             <select class="form-select" id="universe" name="universe" required>
@@ -23,13 +23,13 @@
                 <option value="Other" {% if hero['universe'] == 'Other' %}selected{% endif %}>Other</option>
             </select>
         </div>
-
+        
         <div class="mb-3">
             <label for="image" class="form-label text-light">Upload New Image (optional):</label>
-            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpg, image/jpeg, image/gif">
             <input type="hidden" name="existing_image" value="{{ hero['image_url'] }}">
-            <small class="text-light">Current Image: {{ hero['image_url'] }}</small>
-        </div>
+            <small class="text-light">Allowed: PNG, JPG, GIF (Max 2MB)</small>
+        </div>        
 
         <button type="submit" class="btn btn-warning">Save Changes</button>
     </form>
