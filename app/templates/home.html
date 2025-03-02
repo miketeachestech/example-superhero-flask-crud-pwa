@@ -26,6 +26,7 @@
                         <!-- Edit and Delete Buttons -->
                         <a href="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" class="btn btn-info btn-sm mt-2">✏ Edit</a>
                         <form method="POST" action="{{ url_for('main.delete_superhero', hero_id=hero['id']) }}" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button type="submit" class="btn btn-danger btn-sm mt-2" onclick="return confirm('Are you sure?')">🗑 Delete</button>
                         </form>
     
@@ -42,6 +43,7 @@
                                 <li>
                                     ⚡ {{ power['description'] }}
                                     <form method="POST" action="{{ url_for('main.delete_power', power_id=power['id']) }}" style="display:inline;">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                         <button type="submit" class="btn btn-danger btn-sm">❌</button>
                                     </form>
                                 </li>
@@ -50,6 +52,7 @@
     
                             <!-- Add New Power -->
                             <form method="POST" action="{{ url_for('main.add_power', hero_id=hero['id']) }}" class="mt-2">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="power" placeholder="New Power" required minlength="2" maxlength="200">
                                     <button type="submit" class="btn btn-success">➕ Add</button>
