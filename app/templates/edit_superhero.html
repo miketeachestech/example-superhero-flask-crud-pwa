@@ -2,38 +2,42 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="text-warning">Edit Superhero</h1>
+    <h1 class="text-warning" aria-label="Edit Superhero Page">Edit Superhero</h1>
 
-    <form method="POST" action="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" enctype="multipart/form-data" class="bg-dark p-4 rounded shadow">
+    <form method="POST" action="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" enctype="multipart/form-data" class="bg-dark p-4 rounded shadow" aria-labelledby="edit-superhero-form">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <div class="mb-3">
-            <label for="name" class="form-label text-light">Real Name:</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ hero['name'] }}" required minlength="2" maxlength="100">
-        </div>
-        
-        <div class="mb-3">
-            <label for="alias" class="form-label text-light">Hero Name (Alias):</label>
-            <input type="text" class="form-control" id="alias" name="alias" value="{{ hero['alias'] }}" required minlength="2" maxlength="100">
-        </div>
-        
-        <div class="mb-3">
-            <label for="universe" class="form-label text-light">Universe:</label>
-            <select class="form-select" id="universe" name="universe" required>
-                <option value="Marvel" {% if hero['universe'] == 'Marvel' %}selected{% endif %}>Marvel</option>
-                <option value="DC" {% if hero['universe'] == 'DC' %}selected{% endif %}>DC</option>
-                <option value="Other" {% if hero['universe'] == 'Other' %}selected{% endif %}>Other</option>
-            </select>
-        </div>
-        
-        <div class="mb-3">
-            <label for="image" class="form-label text-light">Upload New Image (optional):</label>
-            <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpg, image/jpeg, image/gif">
-            <input type="hidden" name="existing_image" value="{{ hero['image_url'] }}">
-            <small class="text-light">Allowed: PNG, JPG, GIF (Max 2MB)</small>
-        </div>        
+        <fieldset id="edit-superhero-form">
+            <legend class="text-light visually-hidden">Edit superhero details</legend>
 
-        <button type="submit" class="btn btn-warning">Save Changes</button>
+            <div class="mb-3">
+                <label for="name" class="form-label text-light">Real Name:</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ hero['name'] }}" required minlength="2" maxlength="100" aria-label="Enter the real name of the superhero">
+            </div>
+
+            <div class="mb-3">
+                <label for="alias" class="form-label text-light">Hero Name (Alias):</label>
+                <input type="text" class="form-control" id="alias" name="alias" value="{{ hero['alias'] }}" required minlength="2" maxlength="100" aria-label="Enter the alias of the superhero">
+            </div>
+
+            <div class="mb-3">
+                <label for="universe" class="form-label text-light">Universe:</label>
+                <select class="form-select" id="universe" name="universe" required aria-label="Select the superhero universe">
+                    <option value="Marvel" {% if hero['universe'] == 'Marvel' %}selected{% endif %}>Marvel</option>
+                    <option value="DC" {% if hero['universe'] == 'DC' %}selected{% endif %}>DC</option>
+                    <option value="Other" {% if hero['universe'] == 'Other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label text-light">Upload New Image (optional):</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpg, image/jpeg, image/gif" aria-label="Upload a new superhero image">
+                <input type="hidden" name="existing_image" value="{{ hero['image_url'] }}">
+                <small class="text-light" id="image-info">Allowed: PNG, JPG, GIF (Max 2MB)</small>
+            </div>        
+
+            <button type="submit" class="btn btn-warning" aria-label="Save superhero changes">Save Changes</button>
+        </fieldset>
     </form>
 </div>
 {% endblock %}

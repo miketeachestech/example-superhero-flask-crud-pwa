@@ -14,8 +14,8 @@
         <div class="row">
             {% for hero in superheroes %}
             <div class="col-md-4">
-                <div class="card bg-dark text-white mb-4 shadow">
-                    <img src="{{ url_for('static', filename='images/' + hero['image_url']) }}" class="card-img-top" alt="{{ hero['alias'] }}">
+                <div class="card bg-secondary text-white mb-4 shadow">
+                    <img src="{{ url_for('static', filename='images/' + hero['image_url']) }}" class="card-img-top" alt="Portrait of {{ hero['alias'] }}">
     
                     <div class="card-body text-center">
                         <h3 class="card-title">{{ hero['alias'] }}</h3>
@@ -24,10 +24,10 @@
                         <br>
 
                         <!-- Edit and Delete Buttons -->
-                        <a href="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" class="btn btn-info btn-sm mt-2">✏ Edit</a>
+                        <a href="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" aria-label="Edit {{ hero['alias'] }}" class="btn btn-info btn-sm mt-2">✏ Edit</a>
                         <form method="POST" action="{{ url_for('main.delete_superhero', hero_id=hero['id']) }}" style="display:inline;">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <button type="submit" class="btn btn-danger btn-sm mt-2" onclick="return confirm('Are you sure?')">🗑 Delete</button>
+                            <button type="submit" class="btn btn-danger btn-sm mt-2" aria-label="Delete {{ hero['alias'] }}" onclick="return confirm('Are you sure?')">🗑 Delete</button>
                         </form>
     
                         <!-- Toggle Button -->
@@ -44,7 +44,7 @@
                                     ⚡ {{ power['description'] }}
                                     <form method="POST" action="{{ url_for('main.delete_power', power_id=power['id']) }}" style="display:inline;">
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                        <button type="submit" class="btn btn-danger btn-sm">❌</button>
+                                        <button type="submit" class="btn btn-danger btn-sm" aria-label="Delete the {{ power['description'] }} superpower">❌</button>
                                     </form>
                                 </li>
                                 {% endfor %}
@@ -54,8 +54,8 @@
                             <form method="POST" action="{{ url_for('main.add_power', hero_id=hero['id']) }}" class="mt-2">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="power" placeholder="New Power" required minlength="2" maxlength="200">
-                                    <button type="submit" class="btn btn-success">➕ Add</button>
+                                    <input type="text" class="form-control" name="power" placeholder="New Power" required minlength="2" maxlength="200" aria-label="Enter new superpower for {{ hero['alias'] }}">
+                                    <button type="submit" class="btn btn-success" aria-label="Add superpower to {{ hero['alias'] }}">➕ Add</button>
                                 </div>
                             </form>
                         </div>

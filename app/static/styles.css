@@ -38,3 +38,24 @@ h1, .lead {
 .card:hover {
     transform: scale(1.05);
 }
+
+.text-warning {
+    color: #FFC107 !important; /* Make text more readable */
+}
+
+.bg-dark {
+    background-color: #121212 !important; /* Darker for better contrast */
+}
+
+.bg-secondary {
+    background-color: #252525 !important; /* Darker for better contrast */
+}
+
+.btn-warning {
+    color: #000 !important; /* Ensure buttons are readable */
+}
+
+button:focus, a:focus, input:focus {
+    outline: 2px solid #FFC107;  /* Gold outline for better visibility */
+    outline-offset: 2px;
+}

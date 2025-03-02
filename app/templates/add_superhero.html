@@ -2,37 +2,41 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="text-warning">Add a New Superhero</h1>
+    <h1 class="text-warning" aria-label="Add a New Superhero Page">Add a New Superhero</h1>
 
-    <form method="POST" action="{{ url_for('main.add_superhero') }}" enctype="multipart/form-data" class="bg-dark p-4 rounded shadow">
+    <form method="POST" action="{{ url_for('main.add_superhero') }}" enctype="multipart/form-data" class="bg-dark p-4 rounded shadow" aria-labelledby="add-superhero-form">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <div class="mb-3">
-            <label for="name" class="form-label text-light">Real Name:</label>
-            <input type="text" class="form-control" id="name" name="name" required minlength="2" maxlength="100">
-        </div>
+        <fieldset id="add-superhero-form">
+            <legend class="text-light visually-hidden">Enter new superhero details</legend>
 
-        <div class="mb-3">
-            <label for="alias" class="form-label text-light">Hero Name (Alias):</label>
-            <input type="text" class="form-control" id="alias" name="alias" required minlength="2" maxlength="100">
-        </div>
+            <div class="mb-3">
+                <label for="name" class="form-label text-light">Real Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required minlength="2" maxlength="100" aria-label="Enter the real name of the superhero">
+            </div>
 
-        <div class="mb-3">
-            <label for="universe" class="form-label text-light">Universe:</label>
-            <select class="form-select" id="universe" name="universe" required>
-                <option value="Marvel">Marvel</option>
-                <option value="DC">DC</option>
-                <option value="Other">Other</option>
-            </select>
-        </div>
+            <div class="mb-3">
+                <label for="alias" class="form-label text-light">Hero Name (Alias):</label>
+                <input type="text" class="form-control" id="alias" name="alias" required minlength="2" maxlength="100" aria-label="Enter the superhero alias">
+            </div>
 
-        <div class="mb-3">
-            <label for="image" class="form-label text-light">Upload Image:</label>
-            <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpg, image/jpeg, image/gif">
-            <small class="text-light">Allowed: PNG, JPG, GIF (Max 2MB)</small>
-        </div>
+            <div class="mb-3">
+                <label for="universe" class="form-label text-light">Universe:</label>
+                <select class="form-select" id="universe" name="universe" required aria-label="Select the superhero universe">
+                    <option value="Marvel">Marvel</option>
+                    <option value="DC">DC</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
 
-        <button type="submit" class="btn btn-warning">Add Superhero</button>
+            <div class="mb-3">
+                <label for="image" class="form-label text-light">Upload Image:</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpg, image/jpeg, image/gif" aria-describedby="image-info" aria-label="Upload an image for the superhero">
+                <small class="text-light" id="image-info">Allowed: PNG, JPG, GIF (Max 2MB)</small>
+            </div>        
+
+            <button type="submit" class="btn btn-warning" aria-label="Submit the new superhero form">Add Superhero</button>
+        </fieldset>
     </form>
 </div>
 {% endblock %}
