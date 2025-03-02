@@ -37,12 +37,12 @@ def home():
                                for p in superpowers if p["superhero_id"] == hero["id"]]
         superhero_list.append(hero_dict)
 
-    return render_template("home.html", superheroes=superhero_list, universe_filter=universe_filter)
+    return render_template("home.html", superheroes=superhero_list, universe_filter=universe_filter, title="SuperApp - Home")
 
 @main.route('/about')
 def about():
     """Simple About page"""
-    return render_template("about.html")
+    return render_template("about.html", title="SuperApp - About")
 
 def allowed_file(filename):
     """Check if the file has an allowed extension"""
@@ -115,7 +115,7 @@ def add_superhero():
         flash("Superhero added successfully!", "success")
         return redirect(url_for('main.home'))
 
-    return render_template("add_superhero.html")
+    return render_template("add_superhero.html", title="SuperApp - New Superhero")
 
 @main.route('/edit/<int:hero_id>', methods=['GET', 'POST'])
 def edit_superhero(hero_id):
@@ -126,7 +126,7 @@ def edit_superhero(hero_id):
     hero = cursor.fetchone()
 
     if not hero:
-        return render_template("404.html"), 404  # Return custom 404 page
+        return render_template("404.html", title="SuperApp - Superhero 404"), 404  # Return custom 404 page
 
     if request.method == 'POST':
         name = sanitize_input(request.form['name'].strip())
@@ -196,7 +196,7 @@ def edit_superhero(hero_id):
     hero = cursor.fetchone()
     conn.close()
 
-    return render_template("edit_superhero.html", hero=hero)
+    return render_template("edit_superhero.html", hero=hero, title="SuperApp - Edit Superhero")
 
 @main.route('/delete/<int:hero_id>', methods=['POST'])
 def delete_superhero(hero_id):

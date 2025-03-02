@@ -1,0 +1,5 @@
+Flask==3.0.0
+Flask-WTF==1.2.1
+pytest==8.0.0
+sqlite3==3.39.4
+Werkzeug==3.0.1
