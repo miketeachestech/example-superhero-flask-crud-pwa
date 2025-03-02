@@ -22,6 +22,12 @@
                         <p><strong>({{ hero['name'] }})</strong></p>
                         <p class="badge bg-warning text-dark">{{ hero['universe'] }}</p>
                         <br>
+
+                        <!-- Edit and Delete Buttons -->
+                        <a href="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" class="btn btn-info btn-sm mt-2">✏ Edit</a>
+                        <form method="POST" action="{{ url_for('main.delete_superhero', hero_id=hero['id']) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm mt-2" onclick="return confirm('Are you sure?')">🗑 Delete</button>
+                        </form>
     
                         <!-- Toggle Button -->
                         <button class="btn btn-outline-warning btn-sm mt-2" data-bs-toggle="collapse" data-bs-target="#details-{{ hero['id'] }}">
@@ -33,14 +39,21 @@
                             <h5 class="text-warning">Superpowers</h5>
                             <ul class="list-unstyled">
                                 {% for power in hero['powers'] %}
-                                <li>⚡ {{ power }}</li>
+                                <li>
+                                    ⚡ {{ power['description'] }}
+                                    <form method="POST" action="{{ url_for('main.delete_power', power_id=power['id']) }}" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm">❌</button>
+                                    </form>
+                                </li>
                                 {% endfor %}
                             </ul>
     
-                            <!-- Edit and Delete Buttons -->
-                            <a href="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" class="btn btn-info btn-sm">✏ Edit</a>
-                            <form method="POST" action="{{ url_for('main.delete_superhero', hero_id=hero['id']) }}" style="display:inline;">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">🗑 Delete</button>
+                            <!-- Add New Power -->
+                            <form method="POST" action="{{ url_for('main.add_power', hero_id=hero['id']) }}" class="mt-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="power" placeholder="New Power" required>
+                                    <button type="submit" class="btn btn-success">➕ Add</button>
+                                </div>
                             </form>
                         </div>
                     </div>

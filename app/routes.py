@@ -32,7 +32,8 @@ def home():
     superhero_list = []
     for hero in superheroes:
         hero_dict = dict(hero)
-        hero_dict["powers"] = [p["description"] for p in superpowers if p["superhero_id"] == hero["id"]]
+        hero_dict["powers"] = [{"id": p["id"], "description": p["description"]}
+                               for p in superpowers if p["superhero_id"] == hero["id"]]
         superhero_list.append(hero_dict)
 
     return render_template("home.html", superheroes=superhero_list, universe_filter=universe_filter)
@@ -129,4 +130,32 @@ def delete_superhero(hero_id):
     conn.close()
 
     flash("Superhero deleted successfully!", "danger")
+    return redirect(url_for('main.home'))
+
+@main.route('/add_power/<int:hero_id>', methods=['POST'])
+def add_power(hero_id):
+    """Add a superpower to a superhero"""
+    new_power = request.form['power']
+    
+    if new_power.strip():
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO superpowers (description, superhero_id) VALUES (?, ?)", (new_power, hero_id))
+        conn.commit()
+        conn.close()
+
+        flash("Superpower added!", "success")
+
+    return redirect(url_for('main.home'))
+
+@main.route('/delete_power/<int:power_id>', methods=['POST'])
+def delete_power(power_id):
+    """Delete a superpower"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM superpowers WHERE id=?", (power_id,))
+    conn.commit()
+    conn.close()
+
+    flash("Superpower removed!", "danger")
     return redirect(url_for('main.home'))

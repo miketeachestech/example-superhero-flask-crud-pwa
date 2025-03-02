@@ -28,8 +28,7 @@ def seed_data():
         ("Powered armor suit", ironman_id),
         ("Super strength", superman_id),
         ("Flight", superman_id),
-        ("Genius intellect", batman_id),
-        ("Rich", batman_id)
+        ("Lots Of Money", batman_id)
     ])
 
     conn.commit()
