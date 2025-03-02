@@ -22,10 +22,14 @@
                             <li>- {{ power }}</li>
                             {% endfor %}
                         </ul>
+                        <a href="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" class="btn btn-sm btn-info">✏ Edit</a>
+                        <form method="POST" action="{{ url_for('main.delete_superhero', hero_id=hero['id']) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">🗑 Delete</button>
+                        </form>
                     </div>
                 </div>
             </div>
             {% endfor %}
-        </div>
+        </div>        
     </div>
 {% endblock %}
