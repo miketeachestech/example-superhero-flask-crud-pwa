@@ -1,27 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h1 class="text-warning">Superheroes</h1>
+    <div class="container">
+        <h1 class="text-warning">Superheroes</h1>
 
-    <div class="row">
-        {% for hero in superheroes %}
-        <div class="col-md-4">
-            <div class="card bg-dark text-white mb-4 shadow">
-                <img src="{{ url_for('static', filename='images/' + hero['image_url']) }}" class="card-img-top" alt="{{ hero['alias'] }}">
-                <div class="card-body">
-                    <h3 class="card-title">{{ hero['alias'] }} ({{ hero['name'] }})</h3>
-                    <p><strong>Universe:</strong> {{ hero['universe'] }}</p>
-                    <h5>Superpowers:</h5>
-                    <ul>
-                        {% for power in hero['powers'] %}
-                        <li>- {{ power }}</li>
-                        {% endfor %}
-                    </ul>
+        <div class="text-end mb-3">
+            <a href="{{ url_for('main.add_superhero') }}" class="btn btn-success">➕ Add Superhero</a>
+        </div>
+
+        <div class="row">
+            {% for hero in superheroes %}
+            <div class="col-md-4">
+                <div class="card bg-dark text-white mb-4 shadow">
+                    <img src="{{ url_for('static', filename='images/' + hero['image_url']) }}" class="card-img-top" alt="{{ hero['alias'] }}">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ hero['alias'] }} ({{ hero['name'] }})</h3>
+                        <p><strong>Universe:</strong> {{ hero['universe'] }}</p>
+                        <h5>Superpowers:</h5>
+                        <ul>
+                            {% for power in hero['powers'] %}
+                            <li>- {{ power }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
 {% endblock %}

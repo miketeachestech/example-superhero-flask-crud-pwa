@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-warning">Add a New Superhero</h1>
+
+    <form method="POST" action="{{ url_for('main.add_superhero') }}" class="bg-dark p-4 rounded shadow">
+        <div class="mb-3">
+            <label for="name" class="form-label text-light">Real Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="alias" class="form-label text-light">Hero Name (Alias):</label>
+            <input type="text" class="form-control" id="alias" name="alias" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="universe" class="form-label text-light">Universe:</label>
+            <select class="form-select" id="universe" name="universe" required>
+                <option value="Marvel">Marvel</option>
+                <option value="DC">DC</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="image_url" class="form-label text-light">Image Filename (Optional):</label>
+            <input type="text" class="form-control" id="image_url" name="image_url" placeholder="default.png">
+            <small class="text-light">Place image in <code>static/images/</code> directory.</small>
+        </div>
+
+        <button type="submit" class="btn btn-warning">Add Superhero</button>
+    </form>
+</div>
+{% endblock %}
