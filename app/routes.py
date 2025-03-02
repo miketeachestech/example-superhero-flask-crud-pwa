@@ -122,6 +122,11 @@ def edit_superhero(hero_id):
     """Edit a superhero with validation and duplicate prevention"""
     conn = get_db_connection()
     cursor = conn.cursor()
+    cursor.execute("SELECT * FROM superheroes WHERE id=?", (hero_id,))
+    hero = cursor.fetchone()
+
+    if not hero:
+        return render_template("404.html"), 404  # Return custom 404 page
 
     if request.method == 'POST':
         name = sanitize_input(request.form['name'].strip())
