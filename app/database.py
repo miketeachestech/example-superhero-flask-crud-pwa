@@ -13,7 +13,7 @@ def initialize_db():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Create Superheroes table (including image URL)
+    # Create Superheroes table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS superheroes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,7 +24,7 @@ def initialize_db():
         )
     ''')
 
-    # Create Superpowers table (linked to superheroes)
+    # Create Superpowers table (CASCADE DELETE will ensure deleting a superhero removes all their powers too)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS superpowers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
