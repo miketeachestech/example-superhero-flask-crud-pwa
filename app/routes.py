@@ -1,5 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+import os
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from werkzeug.utils import secure_filename
 from app.database import get_db_connection
+from app.config import Config 
 
 main = Blueprint('main', __name__)
 
@@ -33,22 +36,35 @@ def about():
     """Simple About page"""
     return render_template("about.html")
 
+def allowed_file(filename):
+    """Check if the file has an allowed extension"""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_EXTENSIONS
+
 @main.route('/add', methods=['GET', 'POST'])
 def add_superhero():
-    """Form to add a new superhero"""
+    """Form to add a new superhero with an image upload"""
     if request.method == 'POST':
         name = request.form['name']
         alias = request.form['alias']
         universe = request.form['universe']
-        image_url = request.form['image_url'] if request.form['image_url'] else 'default.png'
+        image_file = request.files['image']
+
+        image_filename = 'default.png'  # Default image if no file is uploaded
+
+        if image_file and allowed_file(image_file.filename):
+            filename = secure_filename(image_file.filename)  # Sanitize filename
+            image_path = os.path.join(Config.UPLOAD_FOLDER, filename)
+            image_file.save(image_path)  # Save file
+            image_filename = filename  # Store the filename in the database
 
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("INSERT INTO superheroes (name, alias, universe, image_url) VALUES (?, ?, ?, ?)",
-                       (name, alias, universe, image_url))
+                       (name, alias, universe, image_filename))
         conn.commit()
         conn.close()
 
+        flash("Superhero added successfully!", "success")
         return redirect(url_for('main.home'))
 
     return render_template("add_superhero.html")

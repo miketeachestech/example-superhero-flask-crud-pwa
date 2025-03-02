@@ -4,7 +4,7 @@
 <div class="container">
     <h1 class="text-warning">Add a New Superhero</h1>
 
-    <form method="POST" action="{{ url_for('main.add_superhero') }}" class="bg-dark p-4 rounded shadow">
+    <form method="POST" action="{{ url_for('main.add_superhero') }}" enctype="multipart/form-data" class="bg-dark p-4 rounded shadow">
         <div class="mb-3">
             <label for="name" class="form-label text-light">Real Name:</label>
             <input type="text" class="form-control" id="name" name="name" required>
@@ -25,9 +25,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="image_url" class="form-label text-light">Image Filename (Optional):</label>
-            <input type="text" class="form-control" id="image_url" name="image_url" placeholder="default.png">
-            <small class="text-light">Place image in <code>static/images/</code> directory.</small>
+            <label for="image" class="form-label text-light">Upload Image:</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            <small class="text-light">Allowed file types: JPG, PNG, GIF</small>
         </div>
 
         <button type="submit" class="btn btn-warning">Add Superhero</button>
