@@ -20,7 +20,7 @@ def initialize_db():
             name TEXT NOT NULL UNIQUE,
             alias TEXT NOT NULL,
             universe TEXT NOT NULL,
-            image_url TEXT DEFAULT 'default.png'
+            image_url TEXT DEFAULT 'default.png UNIQUE'
         )
     ''')
 

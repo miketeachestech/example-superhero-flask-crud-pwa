@@ -54,7 +54,7 @@ def sanitize_input(text):
 
 @main.route('/add', methods=['GET', 'POST'])
 def add_superhero():
-    """Form to add a new superhero with validation"""
+    """Form to add a new superhero with validation and duplicate prevention"""
     if request.method == 'POST':
         name = sanitize_input(request.form['name'].strip())
         alias = sanitize_input(request.form['alias'].strip())
@@ -71,22 +71,42 @@ def add_superhero():
 
         image_filename = 'default.png'  # Default image if no file is uploaded
 
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Check if superhero name already exists
+        cursor.execute("SELECT id FROM superheroes WHERE name=?", (name,))
+        existing_name = cursor.fetchone()
+        if existing_name:
+            flash("A superhero with this name already exists!", "danger")
+            conn.close()
+            return redirect(url_for('main.add_superhero'))
+
         if image_file and allowed_file(image_file.filename):
             if image_file.mimetype not in ['image/png', 'image/jpeg', 'image/jpg', 'image/gif']:
                 flash("Invalid image format.", "danger")
+                conn.close()
                 return redirect(url_for('main.add_superhero'))
             if len(image_file.read()) > 2 * 1024 * 1024:  # 2MB limit
                 flash("Image size must be less than 2MB.", "danger")
+                conn.close()
                 return redirect(url_for('main.add_superhero'))
-            
-            image_file.seek(0)  # Reset file pointer after checking size
-            filename = secure_filename(image_file.filename)  # Sanitize filename
-            image_path = os.path.join(Config.UPLOAD_FOLDER, filename)
-            image_file.save(image_path)  # Save file
-            image_filename = filename  # Store the filename in the database
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
+            image_file.seek(0)  # Reset file pointer after checking size
+            filename = secure_filename(image_file.filename)
+
+            # Check if image filename already exists
+            cursor.execute("SELECT id FROM superheroes WHERE image_url=?", (filename,))
+            existing_image = cursor.fetchone()
+            if existing_image:
+                flash("This image is already used for another superhero!", "danger")
+                conn.close()
+                return redirect(url_for('main.add_superhero'))
+
+            image_path = os.path.join(Config.UPLOAD_FOLDER, filename)
+            image_file.save(image_path)
+            image_filename = filename
+
         cursor.execute("INSERT INTO superheroes (name, alias, universe, image_url) VALUES (?, ?, ?, ?)",
                        (name, alias, universe, image_filename))
         conn.commit()
@@ -94,29 +114,71 @@ def add_superhero():
 
         flash("Superhero added successfully!", "success")
         return redirect(url_for('main.home'))
-    
+
     return render_template("add_superhero.html")
 
 @main.route('/edit/<int:hero_id>', methods=['GET', 'POST'])
 def edit_superhero(hero_id):
-    """Edit a superhero entry"""
+    """Edit a superhero with validation and duplicate prevention"""
     conn = get_db_connection()
     cursor = conn.cursor()
 
     if request.method == 'POST':
-        name = request.form['name']
-        alias = request.form['alias']
-        universe = request.form['universe']
+        name = sanitize_input(request.form['name'].strip())
+        alias = sanitize_input(request.form['alias'].strip())
+        universe = request.form['universe'].strip()
         image_file = request.files['image']
+        existing_image_filename = request.form['existing_image']
 
-        image_filename = request.form['existing_image']  # Keep the existing image by default
+        # Validate name and alias
+        if not (2 <= len(name) <= 100 and 2 <= len(alias) <= 100):
+            flash("Name and alias must be between 2 and 100 characters.", "danger")
+            conn.close()
+            return redirect(url_for('main.edit_superhero', hero_id=hero_id))
+
+        # Validate universe selection
+        if universe not in ['Marvel', 'DC', 'Other']:
+            flash("Invalid universe selection.", "danger")
+            conn.close()
+            return redirect(url_for('main.edit_superhero', hero_id=hero_id))
+
+        # Check if new name already exists (excluding the current superhero)
+        cursor.execute("SELECT id FROM superheroes WHERE name=? AND id<>?", (name, hero_id))
+        existing_name = cursor.fetchone()
+        if existing_name:
+            flash("A superhero with this name already exists!", "danger")
+            conn.close()
+            return redirect(url_for('main.edit_superhero', hero_id=hero_id))
+
+        image_filename = existing_image_filename  # Keep existing image by default
 
         if image_file and allowed_file(image_file.filename):
+            if image_file.mimetype not in ['image/png', 'image/jpeg', 'image/jpg', 'image/gif']:
+                flash("Invalid image format.", "danger")
+                conn.close()
+                return redirect(url_for('main.edit_superhero', hero_id=hero_id))
+
+            if len(image_file.read()) > 2 * 1024 * 1024:  # 2MB limit
+                flash("Image size must be less than 2MB.", "danger")
+                conn.close()
+                return redirect(url_for('main.edit_superhero', hero_id=hero_id))
+
+            image_file.seek(0)  # Reset file pointer after checking size
             filename = secure_filename(image_file.filename)
+
+            # Check if new image filename already exists (excluding the current superhero)
+            cursor.execute("SELECT id FROM superheroes WHERE image_url=? AND id<>?", (filename, hero_id))
+            existing_image = cursor.fetchone()
+            if existing_image:
+                flash("This image is already used for another superhero!", "danger")
+                conn.close()
+                return redirect(url_for('main.edit_superhero', hero_id=hero_id))
+
             image_path = os.path.join(Config.UPLOAD_FOLDER, filename)
             image_file.save(image_path)
-            image_filename = filename  # Update the image if a new one is uploaded
+            image_filename = filename
 
+        # Update superhero details
         cursor.execute("UPDATE superheroes SET name=?, alias=?, universe=?, image_url=? WHERE id=?",
                        (name, alias, universe, image_filename, hero_id))
         conn.commit()
@@ -155,18 +217,30 @@ def delete_superhero(hero_id):
 
 @main.route('/add_power/<int:hero_id>', methods=['POST'])
 def add_power(hero_id):
-    """Add a superpower to a superhero"""
-    new_power = request.form['power']
-    
-    if new_power.strip():
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO superpowers (description, superhero_id) VALUES (?, ?)", (new_power, hero_id))
-        conn.commit()
+    """Add a superpower to a superhero with validation & duplicate prevention"""
+    new_power = sanitize_input(request.form['power'].strip())
+
+    # Validate power length
+    if not (2 <= len(new_power) <= 200):
+        flash("Superpower must be between 2 and 200 characters.", "danger")
+        return redirect(url_for('main.home'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Check if power already exists
+    cursor.execute("SELECT id FROM superpowers WHERE description=? AND superhero_id=?", (new_power, hero_id))
+    existing_power = cursor.fetchone()
+    if existing_power:
+        flash("This superhero already has that power!", "warning")
         conn.close()
+        return redirect(url_for('main.home'))
 
-        flash("Superpower added!", "success")
+    cursor.execute("INSERT INTO superpowers (description, superhero_id) VALUES (?, ?)", (new_power, hero_id))
+    conn.commit()
+    conn.close()
 
+    flash("Superpower added!", "success")
     return redirect(url_for('main.home'))
 
 @main.route('/delete_power/<int:power_id>', methods=['POST'])
