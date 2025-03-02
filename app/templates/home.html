@@ -16,24 +16,38 @@
             <div class="col-md-4">
                 <div class="card bg-dark text-white mb-4 shadow">
                     <img src="{{ url_for('static', filename='images/' + hero['image_url']) }}" class="card-img-top" alt="{{ hero['alias'] }}">
-                    <div class="card-body">
-                        <h3 class="card-title">{{ hero['alias'] }} ({{ hero['name'] }})</h3>
-                        <p><strong>Universe:</strong> {{ hero['universe'] }}</p>
-                        <h5>Superpowers:</h5>
-                        <ul>
-                            {% for power in hero['powers'] %}
-                            <li>- {{ power }}</li>
-                            {% endfor %}
-                        </ul>
-                        <a href="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" class="btn btn-sm btn-info">✏ Edit</a>
-                        <form method="POST" action="{{ url_for('main.delete_superhero', hero_id=hero['id']) }}" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">🗑 Delete</button>
-                        </form>
+    
+                    <div class="card-body text-center">
+                        <h3 class="card-title">{{ hero['alias'] }}</h3>
+                        <p><strong>({{ hero['name'] }})</strong></p>
+                        <p class="badge bg-warning text-dark">{{ hero['universe'] }}</p>
+                        <br>
+    
+                        <!-- Toggle Button -->
+                        <button class="btn btn-outline-warning btn-sm mt-2" data-bs-toggle="collapse" data-bs-target="#details-{{ hero['id'] }}">
+                            View Details
+                        </button>
+    
+                        <!-- Collapsible Section (Superpowers + Edit/Delete) -->
+                        <div class="collapse mt-3" id="details-{{ hero['id'] }}">
+                            <h5 class="text-warning">Superpowers</h5>
+                            <ul class="list-unstyled">
+                                {% for power in hero['powers'] %}
+                                <li>⚡ {{ power }}</li>
+                                {% endfor %}
+                            </ul>
+    
+                            <!-- Edit and Delete Buttons -->
+                            <a href="{{ url_for('main.edit_superhero', hero_id=hero['id']) }}" class="btn btn-info btn-sm">✏ Edit</a>
+                            <form method="POST" action="{{ url_for('main.delete_superhero', hero_id=hero['id']) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">🗑 Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
-        </div>   
+        </div>
         
         <div class="text-end mb-3">
             <a href="{{ url_for('main.add_superhero') }}" class="btn btn-success">➕ Add Superhero</a>
