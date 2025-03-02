@@ -4,8 +4,11 @@
     <div class="container">
         <h1 class="text-warning">Superheroes</h1>
 
-        <div class="text-end mb-3">
-            <a href="{{ url_for('main.add_superhero') }}" class="btn btn-success">➕ Add Superhero</a>
+        <div class="mb-3">
+            <a href="{{ url_for('main.home') }}" class="btn btn-light {% if not universe_filter %}active{% endif %}">All</a>
+            <a href="{{ url_for('main.home', universe='Marvel') }}" class="btn btn-danger {% if universe_filter == 'Marvel' %}active{% endif %}">Marvel</a>
+            <a href="{{ url_for('main.home', universe='DC') }}" class="btn btn-primary {% if universe_filter == 'DC' %}active{% endif %}">DC</a>
+            <a href="{{ url_for('main.home', universe='Other') }}" class="btn btn-light {% if universe_filter == 'Other' %}active{% endif %}">Other</a>
         </div>
 
         <div class="row">
@@ -30,6 +33,10 @@
                 </div>
             </div>
             {% endfor %}
-        </div>        
+        </div>   
+        
+        <div class="text-end mb-3">
+            <a href="{{ url_for('main.add_superhero') }}" class="btn btn-success">➕ Add Superhero</a>
+        </div>
     </div>
 {% endblock %}

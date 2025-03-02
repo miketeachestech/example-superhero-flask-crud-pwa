@@ -9,11 +9,17 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def home():
     """Fetch superheroes and their powers using SQL"""
+    universe_filter = request.args.get('universe')  # Get filter from URL
+
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Get all superheroes (including images)
-    cursor.execute("SELECT * FROM superheroes")
+    # Get superheroes, with optional filtering
+    if universe_filter and universe_filter in ['Marvel', 'DC']:
+        cursor.execute("SELECT * FROM superheroes WHERE universe=?", (universe_filter,))
+    else:
+        cursor.execute("SELECT * FROM superheroes")
+
     superheroes = cursor.fetchall()
 
     # Get all superpowers
@@ -29,7 +35,7 @@ def home():
         hero_dict["powers"] = [p["description"] for p in superpowers if p["superhero_id"] == hero["id"]]
         superhero_list.append(hero_dict)
 
-    return render_template("home.html", superheroes=superhero_list)
+    return render_template("home.html", superheroes=superhero_list, universe_filter=universe_filter)
 
 @main.route('/about')
 def about():
