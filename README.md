@@ -1,8 +1,8 @@
 # SuperApp!
 
-A simple app that allows you to Create, Retrieve, Update, and Delete superheroes from a database.
+A simple PWA that allows you to Create, Retrieve, Update, and Delete superheroes from a database.
 
-![Superhero App Screenshot](screenshot.png)  
+![Superhero PWA Screenshot](screenshot-pwa.png)  
 
 ## Getting Started  
 
@@ -124,6 +124,12 @@ This project was built step by step, with each commit adding new functionality. 
 1️⃣9️⃣ **Added functional tests using `pytest` to ensure the app behaves correctly**  
    - Wrote **tests for adding, editing, and deleting superheroes**.  
    - Used `pytest` to **automate testing** and ensure that the app works as expected.  
+
+2️⃣0️⃣ **Converted the App into a Progressive Web App (PWA)**  
+   - Added **a Web Manifest (manifest.json)** to **define the app's name, icons, theme color, and install behavior**. 
+   - Created a **Service Worker (service-worker.js)** to **cache static files, enabling offline functionality**.
+   - Updated `base.html` to **register the Service Worker** and **link the PWA manifest**.
+   - **Verified PWA compliance** using `Chrome DevTools > Application > Manifest`, ensuring all **installability requirements** were met.
 
 ---
 
