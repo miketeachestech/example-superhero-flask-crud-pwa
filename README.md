@@ -137,7 +137,8 @@ This project was built step by step, with each commit adding new functionality. 
 
 Want to take this project **to the next level**? Try downloading this project and extending its functionality by adding:  
 
-🔹 **Villains** – Add a new database table and page to handle supervillains. Create relationships with the superheroes (e.g. archnemesis).  
+🔹 **Villains** – Add a new database table and page to handle supervillains. Create relationships with the superheroes (e.g. archnemesis).    
+🔹 **OO Programming** – Create a Superhero class to represent superheroes, a Superpower class to represent superpowers, a DatabaseManager class to handle all database interactions, and a PWAService class to manage PWA-related functionality, thus promoting modularity, reusability, and cleaner separation of concerns. 
 🔹 **Pagination** – Break the superhero list into pages so all superheroes don’t load at once.  
 🔹 **Image Resizing** – Optimize superhero images to reduce load times.  
 🔹 **Logging** – Keep track of user actions and errors in a log file.  
