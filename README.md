@@ -24,7 +24,12 @@ Before running this project, make sure you have **Python 3** installed and added
    python run.py
    ```
 4. **Visit the app in your browser**  
-   Open [http://localhost:5000](http://localhost:5000) to see the app in action!  
+   Open [http://localhost:5000](http://localhost:5000) to see the app in action! 
+5. **Run tests using Pytest**
+   Run the following commands:
+   ```sh
+   python -m pytest tests/
+   ```
 
 ---
 
